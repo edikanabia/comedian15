@@ -8,11 +8,15 @@ public class Thruster : MonoBehaviour
     Rigidbody2D thrusterBody;
     public float power;
     public KeyCode thrusterKey;
+    public ForceMode2D mode2D;
+    public float xAngle;
+    Vector3 forceAngle;
 
     // Start is called before the first frame update
     void Start()
     {
         thrusterBody = GetComponent<Rigidbody2D>();
+        forceAngle = new Vector3(xAngle, 1, 0);
     }
 
     // Update is called once per frame
@@ -21,13 +25,13 @@ public class Thruster : MonoBehaviour
         if (Input.GetKeyDown(thrusterKey))
         {
             //every time you press the thruster, the force is different.
-            power = Random.Range(1f, 5f);
+            //power = Random.Range(2f, 8f);
             
         }
 
         if (Input.GetKey(thrusterKey))
         {
-            thrusterBody.AddForce(transform.up * power, ForceMode2D.Force);
+            thrusterBody.AddForce(forceAngle * power, mode2D);
         }
     }
 }
