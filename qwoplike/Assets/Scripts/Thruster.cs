@@ -9,7 +9,7 @@ public class Thruster : MonoBehaviour
     public float power;
     public KeyCode thrusterKey;
     public ForceMode2D mode2D;
-
+    Stabilizer stabilizer;
 
     public bool isLeft;
     float rotationFactor;
@@ -18,6 +18,7 @@ public class Thruster : MonoBehaviour
     void Start()
     {
         thrusterBody = GetComponent<Rigidbody2D>();
+        stabilizer = GameObject.Find("stabilizer").GetComponent<Stabilizer>();
     }
 
     // Update is called once per frame
@@ -31,18 +32,23 @@ public class Thruster : MonoBehaviour
         {
             rotationFactor = 1;
         }
-
-        if (Input.GetKeyDown(thrusterKey))
+        if (!stabilizer.isCharging)
         {
-            //every time you press the thruster, the force is different.
-            //
-            
+            if (Input.GetKeyDown(thrusterKey))
+            {
+                //every time you press the thruster, the force is different.
+                //
+
+            }
+
+            if (Input.GetKey(thrusterKey))
+            {
+                thrusterBody.AddForce(transform.up * power, mode2D);
+                //thrusterBody.MoveRotation((thrusterBody.rotation + rotationFactor) * power);
+            }
         }
 
-        if (Input.GetKey(thrusterKey))
-        {
-            thrusterBody.AddForce(transform.up * power, mode2D);
-            //thrusterBody.MoveRotation((thrusterBody.rotation + rotationFactor) * power);
-        }
+
+        
     }
 }

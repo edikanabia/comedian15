@@ -7,7 +7,7 @@ public class Stabilizer : MonoBehaviour
     Rigidbody2D stabilizerBody;
     public float power;
     public KeyCode stabilizerKey;
-
+    public bool isCharging = false;
 
     private float previousRotation;
 
@@ -24,6 +24,7 @@ public class Stabilizer : MonoBehaviour
         if (Input.GetKeyDown(stabilizerKey))
         {
             previousRotation = stabilizerBody.rotation;
+            isCharging = true;
         }
         
         if (Input.GetKey(stabilizerKey))
@@ -33,6 +34,12 @@ public class Stabilizer : MonoBehaviour
             
             stabilizerBody.MoveRotation(previousRotation);
             
+        }
+        if (Input.GetKeyUp(stabilizerKey))
+        {
+            power = Random.Range(6f, 15f);
+            stabilizerBody.AddForce(transform.up * power, ForceMode2D.Impulse);
+            isCharging = false;
         }
     }
 }

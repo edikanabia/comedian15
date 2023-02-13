@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - EnemyPlayer
+  - Enemy
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Arms
   - 
   - 
   - 
