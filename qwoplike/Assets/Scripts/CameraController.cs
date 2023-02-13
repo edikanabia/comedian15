@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
+    public GameManager gameManager;
     public Transform target;
     public float smoothSpeed = 0.125f;
     public Vector3 offset;
@@ -41,5 +41,10 @@ public class CameraController : MonoBehaviour
 
         //boundaries
         transform.position = new Vector3(Mathf.Clamp(smoothedPosition.x, limitLeft, limitRight), Mathf.Clamp(smoothedPosition.y, limitTop, limitBottom), smoothedPosition.z);
+
+        if (gameManager.gameEnd)
+        {
+            target = GameObject.Find("Main Camera").transform;
+        }
     }
 }

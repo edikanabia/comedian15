@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Stabilizer : MonoBehaviour
 {
+    GameManager gameManager;
+    BodyScript body;
+
     Rigidbody2D stabilizerBody;
     public float power;
     public KeyCode stabilizerKey;
@@ -15,31 +18,42 @@ public class Stabilizer : MonoBehaviour
     void Start()
     {
         stabilizerBody = GetComponent<Rigidbody2D>();
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        body = GetComponentInParent<BodyScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(stabilizerKey))
-        {
-            previousRotation = stabilizerBody.rotation;
-            isCharging = true;
-        }
         
-        if (Input.GetKey(stabilizerKey))
+    }
+
+    private void FixedUpdate()
+    {
+        if (!gameManager.gameEnd)
         {
-            //we want to slow the body's rotation...
-            //stabilizerBody.SetRotation(previousRotation);
-            
-            stabilizerBody.MoveRotation(previousRotation);
-            
-        }
-        if (Input.GetKeyUp(stabilizerKey))
-        {
-            power = Random.Range(6f, 15f);
-            stabilizerBody.AddForce(transform.up * power, ForceMode2D.Impulse);
-            isCharging = false;
+            if (Input.GetKeyDown(stabilizerKey))
+            {
+                
+                previousRotation = stabilizerBody.rotation;
+                isCharging = true;
+            }
+
+            if (Input.GetKey(stabilizerKey))
+            {
+                //we want to slow the body's rotation...
+                //stabilizerBody.SetRotation(previousRotation);
+
+                stabilizerBody.MoveRotation(previousRotation);
+
+            }
+            if (Input.GetKeyUp(stabilizerKey))
+            {
+                
+                power = Random.Range(6f, 15f);
+                stabilizerBody.AddForce(transform.up * power, ForceMode2D.Impulse);
+                isCharging = false;
+            }
         }
     }
 }

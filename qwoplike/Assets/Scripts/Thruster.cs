@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Thruster : MonoBehaviour
 {
+    GameManager gameManager;
+    BodyScript body;
 
     Rigidbody2D thrusterBody;
     public float power;
@@ -19,36 +21,49 @@ public class Thruster : MonoBehaviour
     {
         thrusterBody = GetComponent<Rigidbody2D>();
         stabilizer = GameObject.Find("stabilizer").GetComponent<Stabilizer>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        body = GetComponentInParent<BodyScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isLeft)
-        {
-            rotationFactor = -1;
-        }
-        else
-        {
-            rotationFactor = 1;
-        }
-        if (!stabilizer.isCharging)
-        {
-            if (Input.GetKeyDown(thrusterKey))
-            {
-                //every time you press the thruster, the force is different.
-                //
-
-            }
-
-            if (Input.GetKey(thrusterKey))
-            {
-                thrusterBody.AddForce(transform.up * power, mode2D);
-                //thrusterBody.MoveRotation((thrusterBody.rotation + rotationFactor) * power);
-            }
-        }
-
-
         
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (!gameManager.gameEnd)
+        {
+            if (isLeft)
+            {
+                rotationFactor = -1;
+            }
+            else
+            {
+                rotationFactor = 1;
+            }
+            if (!stabilizer.isCharging)
+            {
+                if (Input.GetKeyDown(thrusterKey))
+                {
+                    //every time you press the thruster, the force is different.
+                    //
+                    body.isBoosting = true;
+
+                }
+
+                if (Input.GetKey(thrusterKey))
+                {
+                    thrusterBody.AddForce(transform.up * power, mode2D);
+                    //thrusterBody.MoveRotation((thrusterBody.rotation + rotationFactor) * power);
+                }
+                if (Input.GetKeyUp(thrusterKey))
+                {
+                    body.isBoosting = false;
+                }
+            }
+        }
     }
 }
